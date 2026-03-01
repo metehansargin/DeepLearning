@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 df = pd.read_csv('data.csv')
 df = df.drop(columns=['id', 'Unnamed: 32'], errors='ignore')
 
-# M=1 (Malignant), B=0 (Benign)
+# M=1 (Malignant=kötü), B=0 (Benign=iyi)
 le = LabelEncoder()
 df['diagnosis'] = le.fit_transform(df['diagnosis'])
 
@@ -21,7 +21,7 @@ y = df['diagnosis']
 # 2. VERİ BÖLME VE ÖLÇEKLENDİRME
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Logistic Regression için ölçeklendirme (StandardScaler) şarttır!
+# Logistic Regression için ölçeklendirme
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
@@ -40,11 +40,11 @@ print(f"Precision: {precision_score(y_test, y_pred_lr):.4f}")
 print(f"Recall   : {recall_score(y_test, y_pred_lr):.4f}")
 print(f"F1 Score : {f1_score(y_test, y_pred_lr):.4f}")
 
-# 5. KARMAŞIKLIK MATRİSİ GÖRSELLEŞTİRME (RESİM OLUŞTURMA)
+# 5. KARMAŞIKLIK MATRİSİ GÖRSELLEŞTİRME
 cm_lr = confusion_matrix(y_test, y_pred_lr)
 
 plt.figure(figsize=(8, 6))
-sns.heatmap(cm_lr, annot=True, fmt='d', cmap='Oranges', # Karışmaması için Turuncu tonu seçtim
+sns.heatmap(cm_lr, annot=True, fmt='d', cmap='Oranges',
             xticklabels=['Benign (İyi)', 'Malignant (Kötü)'], 
             yticklabels=['Benign (İyi)', 'Malignant (Kötü)'])
 
@@ -55,4 +55,4 @@ plt.tight_layout()
 
 # Resmi Kaydet
 plt.savefig('confusion_matrix_lr.png')
-print("\nKarmaşıklık matrisi 'confusion_matrix_lr.png' olarak başarıyla oluşturuldu.")
+print("\nKarmaşıklık matrisi 'confusion_matrix_lr.png' oluşturuldu.")
